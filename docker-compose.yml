@@ -21,3 +21,4 @@ services:
       DB_HOST: mysql
       DB_USER: user
       DB_PASSWORD: password
+      
