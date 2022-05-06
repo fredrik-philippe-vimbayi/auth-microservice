@@ -1,5 +1,6 @@
 package com.example.authservice.service;
 
+import com.example.authservice.entity.User;
 import com.example.authservice.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(String user) {
-        //get plain text password
-
-        // encode & save password
-        // user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+    public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

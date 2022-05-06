@@ -1,5 +1,6 @@
 package com.example.authservice.controller;
 
+import com.example.authservice.entity.User;
 import com.example.authservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@Valid @RequestBody String user) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) {
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
