@@ -34,3 +34,9 @@ build/
 
 ### Custom Dev Properties ###
 **/application-dev.properties
+
+### HTTP Tests ###
+Tests.http
+
+### Environmental Variables ###
+.env
