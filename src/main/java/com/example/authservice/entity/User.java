@@ -2,6 +2,10 @@ package com.example.authservice.entity;
 
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -16,6 +20,9 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String role;
+
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
 
     public User(Long id, String email, String password, String role) {
         this.id = id;
@@ -57,5 +64,38 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
+    }
+
+    public User setRoles(Set<Role> roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    public User addRole(Role role) {
+        this.roles.add(role);
+        role.addUser(this);
+        return this;
+    }
+
+    public User removeRole(Role role) {
+        this.roles.remove(role);
+        role.removeUser(this);
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 }

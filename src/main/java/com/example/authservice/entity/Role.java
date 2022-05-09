@@ -2,7 +2,10 @@ package com.example.authservice.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Role {
@@ -14,6 +17,9 @@ public class Role {
     @Column(unique = true)
     @NotBlank(message = "The name of the role is required")
     private String name;
+
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.MERGE)
+    private final Set<User> users = new HashSet<>();
 
     public Role() {
     }
@@ -38,6 +44,18 @@ public class Role {
     public Role setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public Set<User> getUsers() {
+        return Collections.unmodifiableSet(users);
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+
+    public void removeUser(User user) {
+        this.users.remove(user);
     }
 
     @Override
