@@ -37,3 +37,6 @@ build/
 
 ### HTTP Tests ###
 Tests.http
+
+### Environmental Variables ###
+.env

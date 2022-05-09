@@ -17,4 +17,5 @@ services:
       DB_HOST: mysql
       DB_USER: user
       DB_PASSWORD: password
+      CONSUL_HOST: ${DOCKER_GATEWAY_HOST:-host.docker.internal}
       
