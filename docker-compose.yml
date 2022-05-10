@@ -18,7 +18,6 @@ services:
       DB_HOST: mysql
       DB_USER: user
       DB_PASSWORD: password
-
   consul:
     image: consul:1.12
     restart: always
