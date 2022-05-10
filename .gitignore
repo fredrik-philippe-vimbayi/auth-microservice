@@ -34,3 +34,6 @@ build/
 
 ### Custom Dev Properties ###
 **/application-dev.properties
+
+### Environmental Variables ###
+.env
