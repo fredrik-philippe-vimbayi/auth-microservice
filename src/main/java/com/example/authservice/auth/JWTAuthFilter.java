@@ -17,11 +17,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
+import static com.example.authservice.auth.SecurityConstants.EXPIRATION_TIME;
+import static com.example.authservice.auth.SecurityConstants.SECRET;
+
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
 
         setFilterProcessesUrl("api/services/controller/user/login");
