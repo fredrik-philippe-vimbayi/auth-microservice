@@ -13,9 +13,15 @@ services:
     build: .
     depends_on:
       - mysql
+      - consul
     environment:
       DB_HOST: mysql
       DB_USER: user
       DB_PASSWORD: password
-      CONSUL_HOST: ${DOCKER_GATEWAY_HOST:-host.docker.internal}
-      
+
+  consul:
+    image: consul:1.12
+    restart: always
+    ports:
+      - "8500:8500"
+    command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client='0.0.0.0'"
