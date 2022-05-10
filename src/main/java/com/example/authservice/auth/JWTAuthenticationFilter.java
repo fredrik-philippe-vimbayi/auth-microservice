@@ -37,7 +37,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             User creds = new ObjectMapper()
                     .readValue(request.getInputStream(), User.class);
 
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getPassword(), creds.getUsername(), new ArrayList<>));
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getPassword(), creds.getEmail(), new ArrayList<>()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = JWT.create()
                 .withSubject(((User) auth.getPrincipal()).getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(Algorithm.ECDSA256(SECRET.getBytes()));
+                .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
         String body = ((User) auth.getPrincipal()).getEmail() + " " + token;
 
