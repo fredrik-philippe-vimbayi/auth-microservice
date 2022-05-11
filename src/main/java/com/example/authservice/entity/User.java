@@ -1,7 +1,11 @@
 package com.example.authservice.entity;
 
 
+import com.example.authservice.validator.UniqueEmail;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,9 +18,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank
+    @UniqueEmail
+    @Email
     private String email;
-    @Column(nullable = false)
+    @NotBlank
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
