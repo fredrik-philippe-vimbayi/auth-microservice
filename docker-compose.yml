@@ -4,11 +4,11 @@ services:
     image: mysql:8.0.28
     restart: always
     environment:
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: test
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
   server:
     build: .
     depends_on:
@@ -16,8 +16,8 @@ services:
       - consul
     environment:
       DB_HOST: mysql
-      DB_USER: user
-      DB_PASSWORD: password
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
   consul:
     image: consul:1.12
     restart: always
