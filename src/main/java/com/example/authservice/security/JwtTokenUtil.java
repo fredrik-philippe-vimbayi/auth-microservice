@@ -3,16 +3,11 @@ package com.example.authservice.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.function.Function;
 
 import static com.example.authservice.security.SecurityConstants.EXPIRATION_TIME;
@@ -56,12 +51,12 @@ public class JwtTokenUtil {
     }
 
 
-    private static Boolean isTokenExpired(String token) {
+    private static boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
-    public static Boolean validateToken(String token, UserDetails userDetails) {
+    public static boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
