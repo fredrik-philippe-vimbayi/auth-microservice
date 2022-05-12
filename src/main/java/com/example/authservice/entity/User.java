@@ -2,10 +2,7 @@ package com.example.authservice.entity;
 
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class User {
@@ -42,20 +39,22 @@ public class User {
         return username;
     }
 
-    public void setUsername(String email) {
-        this.username = email;
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    public Set<Role> getRoles() {
-        return Collections.unmodifiableSet(roles);
+    public List<Role> getRoles() {
+        return roles.stream().toList();
     }
 
     public User setRoles(Set<Role> roles) {
