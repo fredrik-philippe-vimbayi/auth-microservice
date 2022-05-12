@@ -55,24 +55,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+                                            Authentication auth) throws IOException {
         UserDetails user = authUserDetailsService.loadUserByUsername(((User) auth.getPrincipal()).getUsername());
 
-        Date expiration = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
-        Key key = Keys.hmacShaKeyFor(PUBLIC_KEY.getBytes());
-
-        String jwtToken = Jwts.builder()
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(expiration)
-                .claim("roles", user.getAuthorities().stream().toList())
-                .signWith(key)
-                .compact();
+        String jwtToken = JwtTokenUtil.generateToken(user);
 
         Token token = new Token(jwtToken, "JWT", EXPIRATION_TIME);
 
         res.getWriter().write(objectMapper.writeValueAsString(token));
         res.getWriter().flush();
     }
+
 
 }
