@@ -1,11 +1,8 @@
 package com.example.authservice.entity;
 
 
-import com.example.authservice.validator.UniqueEmail;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,11 +15,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
-    @UniqueEmail
+    @NotBlank(message = "Email is a required field")
     @Email
     private String email;
-    @NotBlank
+    @NotBlank(message = "Password is a required field")
+    @Size(min = 4, message = "Password must be minimum 4 characters long")
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
