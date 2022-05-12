@@ -19,6 +19,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/register", "/authenticate").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .build();
     }
