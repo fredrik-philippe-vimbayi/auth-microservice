@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Arrays;
@@ -18,14 +17,13 @@ import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.example.authservice.auth.SecurityConstants.PRIVATE_KEY;
+
 @Component
 public class TokenProvider implements Serializable {
 
     @Value("${jwt.token.validity}")
     public long TOKEN_VALIDITY;
-
-    @Value("${jwt.signing.key}")
-    public String SIGNING_KEY;
 
     @Value("${jwt.authorities.key}")
     public String AUTHORITIES_KEY;
@@ -44,7 +42,8 @@ public class TokenProvider implements Serializable {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SIGNING_KEY);
+
+        byte[] keyBytes = Decoders.BASE64.decode(PRIVATE_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -61,7 +60,7 @@ public class TokenProvider implements Serializable {
 
     UsernamePasswordAuthenticationToken getAuthenticationToken(final String token, final Authentication existingAuth) {
 
-        final JwtParser jwtParser = Jwts.parser().setSigningKey(SIGNING_KEY);
+        final JwtParser jwtParser = Jwts.parser().setSigningKey(PRIVATE_KEY);
 
         final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
