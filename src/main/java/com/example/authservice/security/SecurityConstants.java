@@ -1,4 +1,4 @@
-package com.example.authservice.jwt;
+package com.example.authservice.security;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
