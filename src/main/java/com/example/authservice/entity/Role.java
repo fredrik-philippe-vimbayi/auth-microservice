@@ -1,5 +1,7 @@
 package com.example.authservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collections;
@@ -46,6 +48,7 @@ public class Role {
         return this;
     }
 
+    @JsonIgnore
     public Set<User> getUsers() {
         return Collections.unmodifiableSet(users);
     }

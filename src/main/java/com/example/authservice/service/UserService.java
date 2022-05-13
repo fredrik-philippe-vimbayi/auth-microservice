@@ -1,5 +1,6 @@
 package com.example.authservice.service;
 
+import com.example.authservice.dto.UserDto;
 import com.example.authservice.entity.Role;
 import com.example.authservice.entity.User;
 import com.example.authservice.repository.RoleRepository;
@@ -13,7 +14,7 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String DEFAULT_ROLE = "ROLE_USER";
+    private static final String DEFAULT_ROLE = "ROLE_USER";
 
     public UserService(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
@@ -21,10 +22,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(User user) {
+    public void createUser(UserDto userDetails) {
         Role defaultRole = roleRepository.findByName(DEFAULT_ROLE);
-        user.addRole(defaultRole);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = new User().setUsername(userDetails.username())
+                .setPassword(passwordEncoder.encode(userDetails.password()))
+                .addRole(defaultRole);
         userRepository.save(user);
     }
 

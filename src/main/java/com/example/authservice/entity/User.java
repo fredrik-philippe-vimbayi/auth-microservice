@@ -2,11 +2,7 @@ package com.example.authservice.entity;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class User {
@@ -15,9 +11,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Email is a required field")
+    @NotBlank(message = "Username is a required field")
     @Email
-    private String email;
+    private String username;
     @NotBlank(message = "Password is a required field")
     @Size(min = 4, message = "Password must be minimum 4 characters long")
     private String password;
@@ -25,8 +21,8 @@ public class User {
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
-    public User(String email, String password) {
-        this.email = email;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -41,24 +37,26 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    public Set<Role> getRoles() {
-        return Collections.unmodifiableSet(roles);
+    public List<Role> getRoles() {
+        return roles.stream().toList();
     }
 
     public User setRoles(Set<Role> roles) {
@@ -82,11 +80,11 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(email, user.email);
+        return Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(username);
     }
 }
