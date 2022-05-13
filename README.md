@@ -7,13 +7,11 @@ It runs with Consul for microservice registration and discovery, a RabbitMQ exch
 MySQL database.
 
 ### Download an image of the application
-
    ```
     docker pull ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
    ```
 
 ### Step-by-step Instructions
-
 1. Create a network
     ```
     docker network create <network-name>
@@ -33,7 +31,6 @@ MySQL database.
         ```
         PUBLIC_KEY=a-public-key
         PRIVATE_KEY=a-private-key
-        SERVER_PORT=8080
         ```
     2. Save the key pair in a safe place
 
@@ -61,8 +58,12 @@ MySQL database.
     ``` 
 
 - run the application on a specific port number by providing a **SERVER_PORT** environmental variable. This can be
-  added to the `.env` file or using the `-e` flag when running the container.
-  A port number of 0 assigns a random port number to the application and allows for the application to be run
+  added to the `.env` file (as below) or by using the `-e` flag when running the container.
+  ```
+  SERVER_PORT=0
+  ```
+    * A port number of **0** assigns a random port number to the application and several containers of the application
+      can be run as a cluster.
 
 ### Endpoints
 
@@ -71,19 +72,17 @@ MySQL database.
 | POST | /register     | Register a new user | 201         | -             |
 | POST | /authenticate | Authenticate a user | 201         | JWT token     |
 
-#### Example of Register / Authenticate Request Body:
 
+#### Example of Register / Authenticate Request Body:
 ```
   {
     "username": "janedoe@mail.com",
     "password": "XXXX"
   }
 ```
-
 * username must be a valid email
 
 #### Example of Authenticate Response Body:
-
 ```
 {
 "access_token": "a-signed-jwt-token",
@@ -91,7 +90,6 @@ MySQL database.
 "expires_in": 72000
 }
 ```
-
 ______________________________________________________________________________________________________________________________________________________________________________       
 Contributors: [Fredrik](https://github.com/ErikssonF), [Phillipe](https://github.com/Philippevial),
 & [Vimbayi](https://github.com/Vimbayinashe)
