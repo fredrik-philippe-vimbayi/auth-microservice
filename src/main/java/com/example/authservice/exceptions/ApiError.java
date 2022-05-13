@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class ApiError {
 
-    private HttpStatus status;
+    private HttpStatus httpStatus;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
@@ -17,31 +17,31 @@ public class ApiError {
         timestamp = LocalDateTime.now();
     }
 
-    ApiError(HttpStatus status) {
+    ApiError(HttpStatus httpStatus) {
         this();
-        this.status = status;
+        this.httpStatus = httpStatus;
     }
 
-    ApiError(HttpStatus status, Throwable ex) {
+    ApiError(HttpStatus httpStatus, Throwable ex) {
         this();
-        this.status = status;
+        this.httpStatus = httpStatus;
         this.message = "Unexpected error";
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    ApiError(HttpStatus status, String message, Throwable ex) {
+    ApiError(HttpStatus httpStatus, String message, Throwable ex) {
         this();
-        this.status = status;
+        this.httpStatus = httpStatus;
         this.message = message;
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    public HttpStatus getStatus() {
-        return status;
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
-    public void setStatus(HttpStatus status) {
-        this.status = status;
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
     }
 
     public LocalDateTime getTimestamp() {
