@@ -26,6 +26,7 @@ public final class UserDto {
         return password;
     }
 
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
