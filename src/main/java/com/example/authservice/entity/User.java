@@ -2,6 +2,8 @@ package com.example.authservice.entity;
 
 
 import javax.persistence.*;
+
+
 import java.util.*;
 
 @Entity
@@ -11,11 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Username is a required field")
-    @Email
     private String username;
-    @NotBlank(message = "Password is a required field")
-    @Size(min = 4, message = "Password must be minimum 4 characters long")
+
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
