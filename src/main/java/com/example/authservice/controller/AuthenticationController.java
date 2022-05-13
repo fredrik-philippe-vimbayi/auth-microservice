@@ -3,17 +3,18 @@ package com.example.authservice.controller;
 import com.example.authservice.dto.Token;
 import com.example.authservice.dto.UserDto;
 import com.example.authservice.entity.User;
+import com.example.authservice.exceptions.UserNotFoundException;
 import com.example.authservice.repository.UserRepository;
 import com.example.authservice.service.TokenService;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("authenticate")
@@ -33,12 +34,12 @@ public class AuthenticationController {
     }
 
     @PostMapping
-    public ResponseEntity<Token> authenticate(@RequestBody UserDto userDto) {
+    public ResponseEntity<Token> authenticate(@RequestBody UserDto userDto, BindingResult errors) {
         User user = userRepository.findByUsername(userDto.username());
 
         if (user == null) {
             logger.warn("Unsuccessful login - username not found");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Incorrect login credentials");
+            throw new UserNotFoundException("Incorrect login credentials", errors);
         }
         
         if (passwordEncoder.matches(userDto.password(), user.getPassword())) {
@@ -46,7 +47,7 @@ public class AuthenticationController {
             return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
             logger.warn("Unsuccessful login attempt for userId {}", user.getId());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Incorrect login credentials");
+            throw new UserNotFoundException("Incorrect login credentials", errors);
         }
     }
 
