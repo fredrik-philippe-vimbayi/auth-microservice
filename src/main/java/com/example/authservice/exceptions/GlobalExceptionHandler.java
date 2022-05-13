@@ -22,14 +22,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, apiError.getHttpStatus());
     }
 
-    @ExceptionHandler
-    protected ResponseEntity<Object> handleNotUniqueEmail(UsernameAlreadyExistsException ex) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(UserNotFoundException.class)
+    protected ResponseEntity<Object> handleUserNotFound(UserNotFoundException ex) {
+        ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         logger.error(ex.getMessage());
 
         return buildResponseEntity(apiError);
-
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -55,16 +54,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
         logger.error(ex.getMessage());
-
-        return buildResponseEntity(apiError);
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    protected ResponseEntity<Object> handleUserNotFound(UserNotFoundException ex) {
-        ApiError apiError = new ApiError(NOT_FOUND);
-        apiError.setMessage(ex.getMessage());
-        logger.error(ex.getMessage());
-
         return buildResponseEntity(apiError);
     }
 
@@ -78,16 +67,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-
-        logger.error(ex.getMessage());
-
-        String errorMessage = "An unexpected error occurred.";
-
-        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage, ex));
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(UsernameAlreadyExistsException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
     }
-
 
     @NonNull
     @Override
