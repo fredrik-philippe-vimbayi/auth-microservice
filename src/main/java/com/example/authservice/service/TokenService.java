@@ -41,7 +41,7 @@ public class TokenService {
         try {
             return keyService.getPrivateKey();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            logger.warn(e.getMessage());
+            logger.error(e.getMessage());
             throw new RuntimeException("Error getting private key, please check logs for more information.");
         }
     }
