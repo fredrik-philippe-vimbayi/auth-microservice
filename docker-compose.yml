@@ -18,7 +18,6 @@ services:
       DB_HOST: mysql
       DB_USER: ${MYSQL_USER}
       DB_PASSWORD: ${MYSQL_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
   consul:
     image: consul:1.12
     restart: always
