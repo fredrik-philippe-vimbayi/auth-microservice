@@ -3,6 +3,7 @@ package com.example.authservice.controller;
 import com.example.authservice.dto.UserDto;
 import com.example.authservice.exceptions.BadRequestException;
 import com.example.authservice.exceptions.UsernameAlreadyExistsException;
+import com.example.authservice.messaging.MessagePublisher;
 import com.example.authservice.repository.UserRepository;
 import com.example.authservice.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,12 @@ public class RegisterUserController {
 
     private final UserRepository userRepository;
 
-    public RegisterUserController(UserService userService, UserRepository userRepository) {
+    private final MessagePublisher messagePublisher;
+
+    public RegisterUserController(UserService userService, UserRepository userRepository, MessagePublisher messagePublisher) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.messagePublisher = messagePublisher;
     }
 
     @PostMapping
@@ -36,6 +40,7 @@ public class RegisterUserController {
           throw new BadRequestException("Invalid input", errors);
 
         userService.createUser(user);
+        messagePublisher.publishMessage(user.username());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
