@@ -14,6 +14,7 @@ services:
     depends_on:
       - mysql
       - consul
+      - rabbit
     environment:
       DB_HOST: mysql
       DB_USER: ${MYSQL_USER}
@@ -24,3 +25,8 @@ services:
     ports:
       - "8500:8500"
     command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client='0.0.0.0'"
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
