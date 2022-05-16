@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 
@@ -26,8 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleUserNotFound(UserNotFoundException ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
-        logger.error(ex.getMessage());
-
+        logger.trace(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
@@ -35,8 +35,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
-        logger.error(ex.getMessage());
-
+        logger.trace(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
@@ -44,8 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
-        logger.error(ex.getMessage());
-
+        logger.trace(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
@@ -53,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBadRequest(BadRequestException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
-        logger.error(ex.getMessage());
+        logger.trace(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
@@ -62,8 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
-        logger.error(ex.getMessage());
-
+        logger.trace(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
@@ -86,7 +83,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             @NotNull
             WebRequest request) {
 
-        logger.error(ex.getMessage());
+        logger.trace(ex.getMessage());
 
         String error = "Malformed JSON request";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
