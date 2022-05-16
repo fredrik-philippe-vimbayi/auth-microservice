@@ -18,16 +18,16 @@ MySQL database.
     ``` 
 2. Create a volume
    ```
-   docker create volume <volume-name>
+   docker volume create <volume-name>
    ```
 3. Run a MySQL database container on the network
    ```
    docker run -d --name mysql --network <network-name> -v <volume-name>:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root
-   -e 'MYSQL_ROOT_HOST=%' -e MYSQL_DATABASE=test -e MYSQL_USER=username -e MYSQL_PASSWORD=password mysql:8.0.29
+   -e 'MYSQL_ROOT_HOST=%' -e MYSQL_DATABASE=test -e MYSQL_USER=user -e MYSQL_PASSWORD=password -p 3308:3306 mysql:8.0.29
    ```
 4. Run a Consul container on the network
     ```
-    docker run -d -p 8500:8500 -p 8600:8600/udp --name=consul consul --network <network-name>
+    docker run -d -p 8500:8500 -p 8600:8600/udp --name=consul --network <network-name> consul
     agent -server -ui -node=server-1 -bootstrap-expect=1 -client='0.0.0.0'
     ```
 5. Run a RabbitMQ container on the network
@@ -49,16 +49,16 @@ MySQL database.
     - Run the microservice as a named container on the created network (from the same folder where
       the `.env` file is saved)
        ```
-       docker run -d --network <network-name> --name authentication -p 8080:8080 
-       --env-file .env ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+       docker run -d --network <network-name> --name authentication -p 8080:8080 --env-file .env
+       ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
        ``` 
 
       **OR**
 
     - Run the microservice container with the `-e` (environmental) variable flag
        ```
-       docker run -d --network <network-name> --name authentication -p 8080:8080 -e SERVER_PORT=8080
-       -e PRIVATE_KEY=a-private-key ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+       docker run -d --network <network-name> --name authentication -p 8080:8080 -e PRIVATE_KEY=a-private-key
+       ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
        ``` 
 
 ### Advanced
