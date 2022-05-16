@@ -1,5 +1,6 @@
 package com.example.authservice.service;
 
+import com.example.authservice.dto.NewUser;
 import com.example.authservice.dto.UserDto;
 import com.example.authservice.entity.Role;
 import com.example.authservice.entity.User;
@@ -22,12 +23,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(UserDto userDetails) {
+    public NewUser createUser(UserDto userDetails) {
         Role defaultRole = roleRepository.findByName(DEFAULT_ROLE);
         User user = new User().setUsername(userDetails.username())
                 .setPassword(passwordEncoder.encode(userDetails.password()))
                 .addRole(defaultRole);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return new NewUser(savedUser.getUsername());
     }
 
 }
