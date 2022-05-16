@@ -12,10 +12,13 @@ import java.util.UUID;
 @RestController
 public class MessagePublisher {
 
-    @Autowired
-    private RabbitTemplate template;
+    private final RabbitTemplate template;
 
-    public void publishMessage(@RequestBody String username){
+    public MessagePublisher(RabbitTemplate template){
+        this.template = template;
+    }
+
+    public void publishMessage(String username){
 
         CustomMessage customMessage = new CustomMessage(UUID.randomUUID().toString(),
                 "User created: " + username, new Date());
