@@ -1,17 +1,20 @@
 package com.example.authservice.dto;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public final class UserDto {
     @NotBlank(message = "is a required field")
     @Email
-    private final String username;
+    private String username;
     @NotBlank(message = "is a required field")
-    @Min(value = 4, message = "must be minimum of 4 characters long")
-    private final String password;
+    @Size(min = 4, message = "must be minimum of 4 characters long")
+    private String password;
+
+    public UserDto() {
+    }
 
     public UserDto(String username, String password) {
         this.username = username;
