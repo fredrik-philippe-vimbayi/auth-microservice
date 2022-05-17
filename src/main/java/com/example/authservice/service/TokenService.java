@@ -6,6 +6,7 @@ import com.example.authservice.entity.User;
 import io.jsonwebtoken.Jwts;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import static com.example.authservice.security.SecurityConstants.EXPIRATION_TIME;
 import static com.example.authservice.security.SecurityConstants.TOKEN_PREFIX;
-
+@Service
 public class TokenService {
 
     private final Logger logger;
