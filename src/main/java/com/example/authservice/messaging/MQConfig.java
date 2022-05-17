@@ -1,6 +1,7 @@
 package com.example.authservice.messaging;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -11,12 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MQConfig {
 
-    public static final String exchange = "auth_message_exchange";
-    public static final String routing_key = "auth_routing_key";
+    public static final String EXCHANGE = "auth_message_exchange";
+    public static final String ROUTING_KEY = "auth_routing_key";
 
     @Bean
-    public TopicExchange exchange (){
-        return new TopicExchange(exchange);
+    public TopicExchange exchange() {
+        return new TopicExchange(EXCHANGE);
     }
 
     @Bean
