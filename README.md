@@ -106,5 +106,5 @@ MySQL database.
   }
 ```
 ______________________________________________________________________________________________________________________________________________________________________________       
-Contributors: [Fredrik](https://github.com/ErikssonF), [Phillipe](https://github.com/Philippevial),
+Contributors: [Fredrik](https://github.com/ErikssonF), [Philippe](https://github.com/Philippevial),
 & [Vimbayi](https://github.com/Vimbayinashe)
