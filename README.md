@@ -105,6 +105,13 @@ MySQL database.
     "expires_in": 72000
   }
 ```
+
+### Exchange Configuration
+
+A message containing the unique username is published when a new user is registered.
+
+Exchange name: **auth_message_exchange**   
+Routing key: **user.new**
 ______________________________________________________________________________________________________________________________________________________________________________       
 Contributors: [Fredrik](https://github.com/ErikssonF), [Philippe](https://github.com/Philippevial),
 & [Vimbayi](https://github.com/Vimbayinashe)
