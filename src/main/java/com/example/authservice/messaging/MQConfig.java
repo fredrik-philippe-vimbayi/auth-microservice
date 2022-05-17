@@ -44,6 +44,4 @@ public class MQConfig {
         template.setMessageConverter(messageConverter());
         return template;
     }
-
-
 }
