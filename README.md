@@ -15,69 +15,78 @@ MySQL database.
 1. Create a network
     ```
     docker network create <network-name>
-    ``` 
-2. Create a volume
+    ```
+2. Run a MySQL database container on the network
    ```
-   docker volume create <volume-name>
+   docker run -d --name mysql --network <network-name> -e MYSQL_ROOT_PASSWORD=root -e 'MYSQL_ROOT_HOST=%'
+    -e MYSQL_DATABASE=test -e MYSQL_USER=user -e MYSQL_PASSWORD=password -p 3308:3306 mysql:8.0.29
    ```
-3. Run a MySQL database container on the network
-   ```
-   docker run -d --name mysql --network <network-name> -v <volume-name>:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root
-   -e 'MYSQL_ROOT_HOST=%' -e MYSQL_DATABASE=test -e MYSQL_USER=user -e MYSQL_PASSWORD=password -p 3308:3306 mysql:8.0.29
-   ```
-4. Run a Consul container on the network
+3. Run a Consul container on the network
     ```
     docker run -d -p 8500:8500 -p 8600:8600/udp --name=consul --network <network-name> consul
     agent -server -ui -node=server-1 -bootstrap-expect=1 -client='0.0.0.0'
     ```
-5. Run a RabbitMQ container on the network
+4. Run a RabbitMQ container on the network
    ```
    docker run -d --name rabbit --network <network-name> -p 15672:15672 -p 5672:5672 rabbitmq:3-management
    ``` 
-6. Create an RSA public - private key pair
+5. Get an RSA public - private key pair (from us)
     ```
-    PUBLIC_KEY=a-public-key
-    PRIVATE_KEY=a-private-key
+    PUBLIC_KEY=your-public-key
+    PRIVATE_KEY=your-private-key
     ```
+6. Add configuration to Consul config
+   * Open Consul's UI on http://localhost:8500
+   * Create a new `.yml` file in the **Key/Value** sub-menu with the following folder structure    
+     **/config/application/data**
+   * Save your configurations
+   ```
+   spring:
+     cloud:
+       consul:
+         discovery:
+         register: true
+         prefer-ip-address: true
+         instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${random.int[1,999999]}
+     host: consul
+     jpa:
+       hibernate:
+         ddl-auto: update
+     datasource:
+       url: jdbc:mysql://mysql:3306/test?allowPublicKeyRetrieval=true&useSSL=false
+     rabbitmq:
+       host: rabbit
+       port: 5672
+   key:
+     private: your-private-key
+   ```
 
-7. Run the authentication microservice according to one of these two options:
-    - Save the keys in a `.env` file as below
-        ```
-        PUBLIC_KEY=a-public-key
-        PRIVATE_KEY=a-private-key
-        ```
-    - Run the microservice as a named container on the created network (from the same folder where
-      the `.env` file is saved)
-       ```
-       docker run -d --network <network-name> --name authentication -p 8080:8080 --env-file .env
-       ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
-       ``` 
-
-      **OR**
-
-    - Run the microservice container with the `-e` (environmental) variable flag
-       ```
-       docker run -d --network <network-name> --name authentication -p 8080:8080 -e PRIVATE_KEY=a-private-key
-       ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
-       ``` 
+7. Run the microservice on a fixed port number. Port `8080` is exposed by default.
+   ```
+   docker run -d --network <network-name> --name authentication -p 8080:8080
+   ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+   ```
 
 ### Advanced
 
-1. Use a custom username & password combination when creating the MySQL container. Then use the same username -
-   password combination to run this authentication service:
-
-    ```
-    docker run -d --network <network-name> --name authentication -p 8080:8080 -e DB_USER=<username>
-    --env-file .env -e DB_PASSWORD=<password> ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
-    ``` 
-
-2. Run the application on a specific port number by providing a **SERVER_PORT** environmental variable. This can be
-   added to the `.env` file `SERVER_PORT=0` or by as an environmental variable `-e SERVER_PORT=0` when starting the
-   container for the first time.
+1. Run the application on a specific port number by providing a **SERVER_PORT** environmental variable:
+   ```
+   docker run -d --network <network-name> --name authentication -e SERVER_PORT=8088 -p 8088:8088
+   ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+   ``` 
 
    _**Note**_: A port number of **0** assigns a random port number to the application and several containers of the
-   application
-   can be run as a cluster.
+   microservice can be run as a cluster:
+   ```
+   docker run -d --network <network-name> --name authentication -e SERVER_PORT=0
+   ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+   ``` 
+2. Run the database with a custom user and password and provide the same values as **DB_USER** and **DB_PASSWORD**
+   environmental variables.
+   ```
+   docker run -d --network <network-name> --name authentication -e DB_USER=<username> -e DB_PASSWORD=<password> 
+   -p 8080:8080 ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+   ``` 
 
 ### Endpoints
 
@@ -100,7 +109,7 @@ MySQL database.
 
 ```
   {
-    "access_token": "a-signed-jwt-token",
+    "access_token": "a-signed-encoded-jwt-token-made",
     "token_type": "Bearer",
     "expires_in": 72000
   }
