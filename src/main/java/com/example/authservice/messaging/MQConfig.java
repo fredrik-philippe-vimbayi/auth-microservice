@@ -16,7 +16,7 @@ public class MQConfig {
     public static final String ROUTING_KEY = "auth_routing_key";
 
     @Bean
-    public TopicExchange exchange() {
+    public TopicExchange topicExchange() {
         return new TopicExchange(EXCHANGE);
     }
 
