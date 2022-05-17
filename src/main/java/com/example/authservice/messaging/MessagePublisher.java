@@ -1,9 +1,9 @@
 package com.example.authservice.messaging;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
-@RestController
+@Component
 public class MessagePublisher {
 
     private final RabbitTemplate template;
