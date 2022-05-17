@@ -13,7 +13,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 @Service
 public class KeyService {
 
-
     @Value("${key.private}")
     private String privateKey;
 
