@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MQConfig {
 
-    public static final String EXCHANGE = "message_exchange";
-    public static final String ROUTING_KEY = "message_exchange";
+    public static final String exchange = "auth_message_exchange";
+    public static final String routing_key = "auth_routing_key";
 
     @Bean
     public TopicExchange exchange (){
-        return new TopicExchange(EXCHANGE);
+        return new TopicExchange(exchange);
     }
 
     @Bean
