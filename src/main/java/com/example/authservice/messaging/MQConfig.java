@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class MQConfig {
 
     public static final String EXCHANGE = "auth_message_exchange";
-    public static final String ROUTING_KEY = "auth_routing_key";
+    public static final String ROUTING_KEY = "user.new";
 
     @Bean
     public TopicExchange topicExchange() {
