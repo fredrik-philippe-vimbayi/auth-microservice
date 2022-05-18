@@ -39,7 +39,7 @@ MySQL database.
 6. Add configuration to Consul config
    * Open Consul's UI on http://localhost:8500
    * Create a new `.yml` file in the **Key/Value** sub-menu with the following folder structure    
-     **/config/application/data**
+     **/config/authentication/data**
    * Save your configurations
    ```
    spring:
