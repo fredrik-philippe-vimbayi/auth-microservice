@@ -46,9 +46,9 @@ MySQL database.
      cloud:
        consul:
          discovery:
-         register: true
-         prefer-ip-address: true
-         instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${random.int[1,999999]}
+           register: true
+           prefer-ip-address: true
+           instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${random.int[1,999999]}
      host: consul
      jpa:
        hibernate:
