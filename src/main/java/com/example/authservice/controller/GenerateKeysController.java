@@ -28,7 +28,10 @@ public class GenerateKeysController {
         PublicKey publicKey = generateKeysService.getRSAKeys().getPublic();
         PrivateKey privateKey = generateKeysService.getRSAKeys().getPrivate();
 
-        Keys key = new Keys(Base64.getEncoder().encodeToString(publicKey.getEncoded()), Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+        String publicKeyToString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
+        String privateKeyToString = Base64.getEncoder().encodeToString(privateKey.getEncoded());
+
+        Keys key = new Keys(publicKeyToString, privateKeyToString);
 
         return new ResponseEntity<>(key, HttpStatus.OK);
     }
