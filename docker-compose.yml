@@ -1,6 +1,6 @@
 version: "2.1"
 services:
-  mysql:
+  authdb:
     image: mysql:8.0.28
     restart: always
     environment:
@@ -12,7 +12,7 @@ services:
   server:
     build: .
     depends_on:
-      - mysql
+      - authdb
       - consul
     environment:
       DB_HOST: mysql
