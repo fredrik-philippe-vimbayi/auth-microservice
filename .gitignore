@@ -37,6 +37,9 @@ build/
 
 ### Environmental Variables ###
 .env
+
 ### HTTP Tests ###
 Tests.http
 
+### Consul Config File ###
+**/application.yml
