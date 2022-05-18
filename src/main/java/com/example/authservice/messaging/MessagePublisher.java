@@ -16,7 +16,7 @@ public class MessagePublisher {
 
         CustomMessage customMessage = new CustomMessage("User created: " + username);
 
-        template.convertAndSend(MQConfig.exchange,MQConfig.routing_key, customMessage);
+        template.convertAndSend(MQConfig.EXCHANGE, MQConfig.ROUTING_KEY, customMessage);
 
     }
 }
