@@ -54,7 +54,7 @@ MySQL database.
        hibernate:
          ddl-auto: update
      datasource:
-       url: jdbc:mysql://mysql:3306/test?allowPublicKeyRetrieval=true&useSSL=false
+       url: jdbc:mysql://authdb:3306/test?allowPublicKeyRetrieval=true&useSSL=false
      rabbitmq:
        host: rabbit
        port: 5672
