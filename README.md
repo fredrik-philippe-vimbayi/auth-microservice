@@ -62,6 +62,10 @@ MySQL database.
        port: 5672
    key:
      private: your-private-key
+   server:
+     port: 8080
+     error:
+       include-message: always
    ```
 
 7. Run the microservice on a fixed port number. Port `8080` is exposed by default.
