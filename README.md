@@ -55,6 +55,8 @@ MySQL database.
          ddl-auto: update
      datasource:
        url: jdbc:mysql://authdb:3306/test?allowPublicKeyRetrieval=true&useSSL=false
+       username: user
+       password: password
      rabbitmq:
        host: rabbit
        port: 5672
