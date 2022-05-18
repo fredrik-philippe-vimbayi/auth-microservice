@@ -22,7 +22,7 @@ MySQL database.
    ```
 3. Run a MySQL database container on the network
    ```
-   docker run -d --name mysql --network <network-name> -v <volume-name>:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root
+   docker run -d --name authdb --network <network-name> -v <volume-name>:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root
    -e 'MYSQL_ROOT_HOST=%' -e MYSQL_DATABASE=test -e MYSQL_USER=user -e MYSQL_PASSWORD=password -p 3308:3306 mysql:8.0.29
    ```
 4. Run a Consul container on the network
