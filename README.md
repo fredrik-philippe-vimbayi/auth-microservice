@@ -34,13 +34,8 @@ MySQL database.
 5. Run a RabbitMQ container on the network
    ```
    docker run -d --name rabbit --network <network-name> -p 15672:15672 -p 5672:5672 rabbitmq:3-management
-   ``` 
-6. Get an RSA public - private key pair (from us)
-    ```
-    PUBLIC_KEY=your-public-key
-    PRIVATE_KEY=your-private-key
-    ```
-7. Add configuration to Consul config
+   ```
+6. Add configuration to Consul config
    * Open Consul's UI on http://localhost:8500
    * Create a new `.yml` file in the **Key/Value** sub-menu with the following folder structure    
      **/config/authentication/data**
@@ -72,10 +67,20 @@ MySQL database.
      private: your-private-key
    ```
 
-8. Run the microservice on a fixed port number. Port `8080` is exposed by default.
+7. Run the microservice on a fixed port number. Port `8080` is exposed by default.
    ```
    docker run -d --network <network-name> --name authentication -p 8080:8080
    ghcr.io/fredrik-philippe-vimbayi/auth-microservice:latest
+   ```
+
+8. Once the auth service is running get a private - public key pair by making a `GET` request to `/keys` endpoint.   
+   Save the key pair in a safe place. The public key is required to verify JWT tokens provided by the `/authenticate`
+   endpoint.
+
+9. Add the private key as `key.private` to the Consul configuration file from **step 6** above.
+   ```
+   key:
+     private: your-private-key
    ```
 
 ### Advanced
@@ -92,10 +97,11 @@ microservice can be run as a cluster.
 
 ### Endpoints
 
-| HTTP | Path          | Information         | Status Code | Response Body |
-|------|---------------|---------------------|-------------|---------------|
-| POST | /register     | Register a new user | 201         | -             |
-| POST | /authenticate | Authenticate a user | 200         | JWT token     |
+| HTTP | Path          | Information                   | Status Code | Response Body |
+|------|---------------|-------------------------------|-------------|---------------|
+| POST | /register     | Register a new user           | 201         | -             |
+| POST | /authenticate | Authenticate a user           | 200         | JWT token     |
+| GET  | /key          | Get a private-public key pair | 200         | Key pair      |
 
 #### Example of a Register / Authenticate Request Body:
 ```
@@ -107,13 +113,22 @@ microservice can be run as a cluster.
 
 **Note:** username must be a valid email
 
-#### Example of an Authenticate Response Body:
+#### Example of an Authentication Response Body:
 
 ```
   {
-    "access_token": "a-signed-encoded-jwt-token-made",
-    "token_type": "Bearer",
-    "expires_in": 72000
+    "access_token" : "a-signed-encoded-jwt-token-made",
+    "token_type"   : "Bearer",
+    "expires_in"   : 72000
+  }
+```
+
+#### Example of a Key Pair Response Body:
+
+```
+  {
+    "publicKey"  : "a-public-key",
+    "privateKey" : "a-private-key"
   }
 ```
 
